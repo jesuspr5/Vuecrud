@@ -141,6 +141,17 @@
             },
           ],
         },
+        {
+          group: '/home/medicinas',
+          icon: 'mdi-account-key',
+          title: 'Medicina',
+          children: [
+            {
+              title: 'Medicinas',
+              to: 'medicinas',
+            },
+          ],
+        },
         // {
         //   group: '/kitchens',
         //   icon: 'mdi-coffee-maker',

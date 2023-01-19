@@ -56,11 +56,25 @@ export default new Router({
           path: 'roles/roles',
           component: () => import('@/views/container/Roles/Roles'),
         },
+
         {
           name: 'RolesFrom',
           path: 'roles/form',
           component: () => import('@/views/container/Roles/RolesForm'),
         },
+        {
+          name: 'Medicina',
+          path: 'medicinas/medicinas',
+          component: () => import('@/views/container/Medicinas/Medicina'),
+        },
+
+        {
+          name: 'MedicinaForm',
+          path: 'medicina/form',
+          component: () => import('@/views/container/Medicinas/MedicinaForm'),
+        },
+
+
         // Kitchen
         {
           name: 'Kitchens',
