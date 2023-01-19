@@ -152,6 +152,17 @@
             },
           ],
         },
+        {
+          group: '/home/sucursal',
+          icon: 'mdi-account-key',
+          title: 'Sucursal',
+          children: [
+            {
+              title: 'Sucursal',
+              to: 'sucursal',
+            },
+          ],
+        },
         // {
         //   group: '/kitchens',
         //   icon: 'mdi-coffee-maker',

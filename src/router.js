@@ -73,6 +73,17 @@ export default new Router({
           path: 'medicina/form',
           component: () => import('@/views/container/Medicinas/MedicinaForm'),
         },
+        {
+          name: 'Sucursal',
+          path: 'sucursal/sucursal',
+          component: () => import('@/views/container/Sucursales/Sucursal'),
+        },
+
+        {
+          name: 'SucursalForm',
+          path: 'sucursal/form',
+          component: () => import('@/views/container/Sucursales/SucursalForm'),
+        },
 
 
         // Kitchen
