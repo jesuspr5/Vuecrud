@@ -258,24 +258,6 @@ export default {
         min: v => v.length >= 5 || 'Min  characters',
         emailMatch: () => ('The email and password you entered don\'t match'),
       },
-    selectData: ["Foo", "Bar", "Fizz", "Buzz"],
-    data: {
-      status: "",
-      status_str: "",
-      type: "",
-      obj: {}
-    },
-    types: [i18n.t("users.doctor"), i18n.t("users.pharmacist")],
-    type: "",
-    role: [
-      "Fight Club",
-      "Godfather",
-      "Godfather II",
-      "Godfather III",
-      "Goodfellas",
-      "Pulp Fiction",
-      "Scarface"
-    ],
     userData:{
              id: '',
             nombre: '',
