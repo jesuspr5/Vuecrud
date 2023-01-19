@@ -27,7 +27,7 @@
             <v-form>
               <v-container class="py-0">
                 <v-row>
-                  <v-col
+                  <!-- <v-col
                     v-for="(item, index) in dataInput"
                     :key="`input-${index}`"
                     cols="12"
@@ -47,56 +47,125 @@
                       filled
                       :label="item.name"
                     ></v-select>
-                  </v-col>
+                  </v-col> -->
 
-                  <!-- <v-col
+                   <v-col
                     cols="12"
                     md="6"
                   >
                     <v-text-field
-                      v-model="data.obj.email"
-                      :label="$t('users.email')"
+                      v-model="userData.nombre"
+                      label="nombre"
                       class="purple-input"
                       :disabled="option===2?true:false"
                     />
                   </v-col>
-
                   <v-col
                     cols="12"
                     md="6"
                   >
                     <v-text-field
-                      v-model="data.obj.fullname"
-                      :label="$t('users.name')"
-                      class="purple-input"
-                      :disabled="option===2?true:false"
-                    />
-                  </v-col>
-
-                  <v-col
-                    cols="12"
-                    md="6"
-                  >
-                    <v-text-field
-                      v-model="data.obj.fullname"
-                      :label="$t('users.lastname')"
-                      class="purple-input"
-                      :disabled="option===2?true:false"
-                    />
-                  </v-col>
-
-                  <v-col
-                    cols="12"
-                    md="6"
-                  >
-                    <v-text-field
-                      :label="$t('users.phone')"
+                    v-model="userData.email"
+                 
+                      label="correo"
                       type="phone"
                       class="purple-input"
                       :disabled="option===2?true:false"
                     />
                   </v-col>
                   <v-col
+                    cols="12"
+                    md="6"
+                    :hidden="option===2?true:false || option===3?true:false "
+                  >
+                  <v-text-field
+                    v-model="userData.password"
+                    :append-icon="show1 ? 'mdi-eye' : ' mdi-eye-off'"
+                    :rules="[rules.required, rules.min]"
+                    :type="show1 ? 'text' : 'password'"
+                    name="input-10-1"
+                    label="Contraseña"
+                    :disabled="option===2?true:false"
+                    hint="At least 8 characters"
+                    counter
+                    @click:append="show1 = !show1"
+                  />
+                    <!-- <v-text-field
+                     
+                      label="Rol"
+                      class="purple-input"
+                      type="password"
+                      :disabled="option===2?true:false"
+                    /> -->
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="6"
+                    :hidden="option===2?true:false || option===3?true:false"
+                  >
+                  <v-text-field
+                    v-model="confirmpassword"
+                    :append-icon="show2 ? 'mdi-eye' : ' mdi-eye-off'"
+                    :rules="[rules.required, rules.min]"
+                    :type="show2 ? 'text' : 'password'"
+                    name="input-10-1"
+                    label="Contraseña"
+                    :disabled="option===2?true:false"
+                 
+                    hint="At least 8 characters"
+                    counter
+                    @click:append="show2 = !show2"
+                  />
+                    <!-- <v-text-field
+                     
+                      label="Rol"
+                      class="purple-input"
+                      type="password"
+                      :disabled="option===2?true:false"
+                    /> -->
+                  </v-col>
+                  
+                  <v-col
+                    cols="12"
+                    md="6"
+                    style="padding-top: 24px"
+                  >
+                    <v-select
+                      :disabled="option===2?true:false"
+                      :items="types"
+                      v-model="userData.rol"
+                      label="Rol"
+                      class="purple-input"
+                      dense
+                    />
+                  </v-col>
+                  <!-- <v-col
+                    cols="12"
+                    md="6"
+                  >
+                    <v-text-field
+                      v-model="userData.rol"
+                      label="Rol"
+                      class="purple-input"
+                      :disabled="option===2?true:false"
+                    />
+                  </v-col> -->
+                  
+
+                  <!-- <v-col
+                    cols="12"
+                    md="6"
+                  >
+                    <v-text-field
+                      v-model="duserData.estatus"
+                      label="estatus"
+                      class="purple-input"
+                      :disabled="option===2?true:false"
+                    />
+                  </v-col> -->
+
+                  
+                  <!-- <v-col
                     cols="12"
                     md="6"
                     style="padding-top: 24px"
@@ -115,7 +184,7 @@
                       class="purple-input"
                       :disabled="option===2?true:false"
                     />
-                  </v-col>-->
+                  </v-col>  -->
                 </v-row>
                 <v-col cols="12" class="text-right">
                   <v-btn
@@ -132,7 +201,7 @@
             <v-form>
               <v-container class="py-0">
                 <v-row>
-                  <v-col cols="12" sm="12">
+                  <!-- <v-col cols="12" sm="12">
                     <v-select
                       color="secondary"
                       item-color="secondary"
@@ -160,7 +229,7 @@
                         </v-list-item>
                       </template>
                     </v-select>
-                  </v-col>
+                  </v-col> -->
                 </v-row>
               </v-container>
             </v-form>
@@ -180,7 +249,15 @@ export default {
     dataInput: userjson.inputs,
     tabs: 0,
     option: 0,
+    show1: false,
+    show2:false,
     title: "",
+    confirmpassword:'',
+    rules: {
+        required: value => !!value || 'Required.',
+        min: v => v.length >= 5 || 'Min  characters',
+        emailMatch: () => ('The email and password you entered don\'t match'),
+      },
     selectData: ["Foo", "Bar", "Fizz", "Buzz"],
     data: {
       status: "",
@@ -198,7 +275,16 @@ export default {
       "Goodfellas",
       "Pulp Fiction",
       "Scarface"
-    ]
+    ],
+    userData:{
+             id: '',
+            nombre: '',
+            email:'',
+            password:'',
+            rol: '',
+            estatus: '',
+
+    }
   }),
   computed: {
     getTitle() {

@@ -19,7 +19,7 @@
         v-model="search"
         append-icon="mdi-magnify"
         class="ml-auto"
-        :label="searchLabel"
+        label="Buscar"
         hide-details
         single-line
         style="max-width: 250px;"
@@ -31,12 +31,12 @@
         :headers="headers"
         :items="items"
         :search.sync="search"
-        :sort-by="['name', 'office']"
+        :sort-by="['id', 'nombre']"
         :sort-desc="[false, true]"
         multi-sort
         class="elevation-1"
       >
-        <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
           <v-btn
 
             :key="1"
@@ -102,31 +102,33 @@
 </template>
 
 <script>
-  import { getUsers } from '@/api/modules'
-  import i18n from '@/i18n'
-  import userjson from './user.json'
   export default {
     name: 'DashboardDataTables',
 
     data: () => ({
       hidden: false,
-      title: userjson.title,
+      title: 'Usuario',
       headers: [
         {
-          text: i18n.t('users.id'),
+          text: 'id',
           value: 'person.id',
         },
         {
-          text: i18n.t('users.name'),
-          value: 'person.fullname',
+          text: 'nombre',
+          value: 'person.nombre',
         },
         {
-          text: i18n.t('users.email'),
+          text: 'correo',
           value: 'person.email',
         },
+       
         {
-          text: i18n.t('users.phone'),
-          value: 'person.phone_number',
+          text: 'Rol',
+          value: 'person.rol',
+        },
+        {
+          text: 'estatus',
+          value: 'person.estatus',
         },
         {
           sortable: false,
@@ -138,17 +140,18 @@
         {
           person: {
             id: 1,
-            fullname: 'algo',
-            email: 'este@gmail.com',
-            phone_number: '2323232323',
+            nombre: 'jesus',
+            rol: 'administrador',
+            estatus: 'activo',
           },
         },
         {
           person: {
-            id: 1,
-            fullname: 'algo',
-            email: 'este@gmail.com',
-            phone_number: '2323232323',
+            id: 2,
+            nombre: 'junior',
+            email:'junior@gmail.com',
+            rol: 'agente',
+            estatus: 'activo',
           },
         },
       ],
