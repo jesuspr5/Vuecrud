@@ -161,7 +161,7 @@
           else return this.title
         },
         getTitleButton () {
-          if (this.option === 1) return 'create'
+          if (this.option === 1) return 'crear'
           else if (this.option === 2) return 'Mostrar '
           else if (this.option === 3) return 'editar '
           else return this.title

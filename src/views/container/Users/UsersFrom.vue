@@ -6,12 +6,12 @@
           <v-tabs v-model="tabs" background-color="transparent" slider-color="white">
             <v-tab class="mr-3">
               <v-icon class="mr-2">mdi-account</v-icon>
-              {{ getTitleButton }}
+              {{ getTitleButton +" "+"Usuario"}}
             </v-tab>
-            <v-tab class="mr-3">
+            <!-- <v-tab class="mr-3">
               <v-icon class="mr-2">mdi-code-tags</v-icon>
               {{ $t('users.role') }}
-            </v-tab>
+            </v-tab> -->
           </v-tabs>
         </template>
 
@@ -197,11 +197,11 @@
               </v-container>
             </v-form>
           </v-tab-item>
-          <v-tab-item :kei="1">
+          <!-- <v-tab-item :kei="1">
             <v-form>
               <v-container class="py-0">
                 <v-row>
-                  <!-- <v-col cols="12" sm="12">
+                  <v-col cols="12" sm="12">
                     <v-select
                       color="secondary"
                       item-color="secondary"
@@ -229,11 +229,11 @@
                         </v-list-item>
                       </template>
                     </v-select>
-                  </v-col> -->
+                  </v-col> 
                 </v-row>
               </v-container>
             </v-form>
-          </v-tab-item>
+          </v-tab-item> -->
         </v-tabs-items>
       </base-material-card>
     </v-row>
@@ -269,18 +269,18 @@ export default {
     }
   }),
   computed: {
-    getTitle() {
-      if (this.option === 1) return i18n.t("users.create");
-      else if (this.option === 2) return i18n.t("users.show");
-      else if (this.option === 3) return i18n.t("users.edit");
-      else return i18n.t("users.title");
-    },
-    getTitleButton() {
-      if (this.option === 1) return i18n.t("crud.create");
-      else if (this.option === 2) return i18n.t("crud.show");
-      else if (this.option === 3) return i18n.t("crud.edit");
-      else return i18n.t("users.title");
-    }
+    getTitle () {
+          if (this.option === 1) return 'crear '
+          else if (this.option === 2) return 'Mostrar '
+          else if (this.option === 3) return 'editar '
+          else return this.title
+        },
+        getTitleButton () {
+          if (this.option === 1) return 'crear'
+          else if (this.option === 2) return 'Mostrar '
+          else if (this.option === 3) return 'editar '
+          else return this.title
+        },
   },
   mounted() {
     // console.log($t('users.title'))

@@ -21,8 +21,8 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">{{ $t("ct") }}</span>
-          <span class="logo-normal">{{ $t("tim") }}</span>
+          <span class="logo-mini">{{ $t("LC") }}</span>
+          <span class="logo-normal">{{ $t("LOCATEL") }}</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
