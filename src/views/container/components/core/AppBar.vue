@@ -21,14 +21,14 @@
       </v-icon>
     </v-btn>
 
-    <v-toolbar-title
+    <!-- <v-toolbar-title
       class="hidden-sm-and-down"
       v-text="$route.name"
-    />
+    /> -->
 
     <v-spacer />
 
-    <v-text-field
+    <!-- <v-text-field
       :label="$t('search')"
       color="secondary"
       hide-details
@@ -47,18 +47,18 @@
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </template>
-    </v-text-field>
+    </v-text-field> -->
 
     <div class="mx-3" />
-
+<!-- 
     <v-btn
       min-width="0"
       text
     >
       <v-icon>mdi-view-dashboard</v-icon>
-    </v-btn>
+    </v-btn> -->
 
-    <v-menu
+    <!-- <v-menu
       bottom
       left
       offset-y
@@ -98,7 +98,7 @@
           </app-bar-item>
         </div>
       </v-list>
-    </v-menu>
+    </v-menu> -->
 
     <v-menu
       bottom
@@ -114,8 +114,9 @@
           text
           v-bind="attrs"
           v-on="on"
-        >
-          <v-icon>mdi-account</v-icon>
+         
+        > 
+          <v-icon>mdi-logout</v-icon>
         </v-btn>
       </template>
 
@@ -129,15 +130,18 @@
             v-if="p.divider"
             :key="`divider-${i}`"
             class="mb-2 mt-2"
+            
           />
-
-          <app-bar-item
-            v-else
+          <v-button
+          v-else
             :key="`item-${i}`"
-            to="/"
+          @click="cerrarSesion">
+          <app-bar-item
           >
             <v-list-item-title v-text="p.title" />
           </app-bar-item>
+          </v-button>
+         
         </template>
       </v-list>
     </v-menu>
@@ -196,10 +200,10 @@
         'Another one',
       ],
       profile: [
-        { title: 'Profile' },
-        { title: 'Settings' },
-        { divider: true },
-        { title: 'Log out' },
+        // { title: 'Profile' },
+        // { title: 'Settings' },
+        // { divider: true },
+        { title: 'Cerrar Sesion'},
       ],
     }),
 
@@ -211,6 +215,11 @@
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
       }),
+      cerrarSesion(){
+  console.log("cerrar sessio")
+  localStorage.removeItem('token');
+  this.$router.push('/')
+}
     },
   }
 </script>

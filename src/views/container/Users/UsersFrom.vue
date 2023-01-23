@@ -109,7 +109,7 @@
                     :rules="[rules.required, rules.min]"
                     :type="show2 ? 'text' : 'password'"
                     name="input-10-1"
-                    label="Contraseña"
+                    label="Confirmar contraseña"
                     :disabled="option===2?true:false"
                  
                     hint="At least 8 characters"

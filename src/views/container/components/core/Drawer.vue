@@ -85,39 +85,39 @@
 
     data: () => ({
       items: [
-        {
-          icon: 'mdi-view-dashboard',
-          title: 'dashboard',
-          to: '/dashboard',
-        },
-        {
-          group: '/pages',
-          icon: 'mdi-image',
-          title: 'pages',
-          children: [
+        // {
+        //   icon: 'mdi-view-dashboard',
+        //   title: 'dashboard',
+        //   to: '/dashboard',
+        // },
+        // {
+        //   group: '/pages',
+        //   icon: 'mdi-image',
+        //   title: 'pages',
+        //   children: [
 
-            {
-              title: 'login',
-              to: 'login',
-            },
-            {
-              title: 'register',
-              to: 'pricing',
-            },
-            {
-              title: 'lock',
-              to: 'lock',
-            },
-            {
-              title: 'user',
-              to: 'user',
-            },
-            {
-              title: 'error',
-              to: '404',
-            },
-          ],
-        },
+        //     {
+        //       title: 'login',
+        //       to: 'login',
+        //     },
+        //     {
+        //       title: 'register',
+        //       to: 'pricing',
+        //     },
+        //     {
+        //       title: 'lock',
+        //       to: 'lock',
+        //     },
+        //     {
+        //       title: 'user',
+        //       to: 'user',
+        //     },
+        //     {
+        //       title: 'error',
+        //       to: '404',
+        //     },
+        //   ],
+        // },
 
         {
           group: '/home/users',
