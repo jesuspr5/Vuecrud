@@ -111,21 +111,25 @@
         hidden: false,
         headers: [
           {
-            text: 'codigo',
-            value: 'articulo.codigo',
+            text: 'Rif',
+            value: 'rif',
+            align: 'center'
           },
           {
-            text:'nombre',
-            value: 'articulo.nombre',
+            text:'Nombre',
+            value: 'nombre',
+            align: 'center'
           },
           {
-            text:'cantidad',
-            value: 'articulo.cantidad',
+            text:'Direccion',
+            value: 'direccion',
+            align : 'center'
           },
   
           {
             text:'status',
-            value: 'articulo.status',
+            value: 'status',
+            align : 'center'
           },
           {
             sortable: false,
@@ -135,12 +139,16 @@
         ],
         items: [
           {
-            articulo: {
-              codigo: 1,
-              nombre: 'admin',
-              cantidad:'10',
-              status: 'Activo',
-            },
+            rif: 1,
+            nombre: 'admin',
+            direccion:'10',
+            status: 'Activo',
+          },
+          {
+            rif: 2,
+            nombre: 'admin 2',
+            direccion:'12',
+            status: 'Activo',
           },
         ],
         search: undefined,
@@ -164,7 +172,7 @@
         create () {
           console.log('create')
           this.$router.push({
-            name: 'MedicinaForm',
+            name: 'SucursalForm',
             params: {
               option: 1, // option 1 to create
             },
@@ -173,7 +181,7 @@
         show (item) {
           console.log(item)
           this.$router.push({
-            name: 'MedicinaForm',
+            name: 'SucursalForm',
             params: {
               option: 2, // option 2 to show
               articuloData: item,
@@ -183,7 +191,7 @@
         edit (item) {
           console.log(item)
           this.$router.push({
-            name: 'MedicinaForm',
+            name: 'SucursalForm',
             params: {
               option: 3, // option 3 to edit
               articuloData: item,

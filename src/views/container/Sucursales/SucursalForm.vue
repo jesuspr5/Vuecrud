@@ -45,10 +45,15 @@
               <v-form>
                 <v-container class="py-0">
                   <v-row>
-                    <v-col
-                      cols="12"
-                      sm="4"
-                    >
+                    <v-col cols="12" sm="3" >
+                      <v-text-field
+                        v-model="articuloData.rif"
+                        class="purple-input"
+                        label="Rif"
+                        :disabled="option===2?true:false"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="3" >
                       <v-text-field
                         v-model="articuloData.nombre"
                         class="purple-input"
@@ -56,69 +61,24 @@
                         :disabled="option===2?true:false"
                       />
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="4"
-                    >
+                    <v-col cols="12" sm="3" >
                       <v-text-field
-                        v-model="articuloData.cantidad"
-                        label="Cantidad"
+                        v-model="articuloData.direccion"
+                        label="Direccion"
                         class="purple-input"
                         :disabled="option===2?true:false"
                       />
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="4"
-                    >
-                      <v-text-field
-                        v-model="articuloData.status"
-                        label="estatus"
-                        class="purple-input"
-                        :disabled="option===2?true:false"
-                      />
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="4"
-                    >
+                    <v-col cols="12" sm="3" >
                       <v-select
-                        v-model="articuloData.functions"
-                        color="secondary"
-                        item-color="secondary"
-                        label="funciones"
-                        multiple
-                        :items="functions"
+                        v-model="articuloData.status"
+                        :items="items"
+                        label="Estatus"
+                        class="purple-input"
                         :disabled="option===2?true:false"
-                      >
-                        <template v-slot:item="{ attrs, item, on }">
-                          <v-list-item
-                            v-bind="attrs"
-                            active-class="secondary elevation-4 white--text"
-                            class="mx-3 mb-2 v-sheet"
-                            elevation="0"
-                            v-on="on"
-                          >
-                            <v-list-item-content>
-                              <v-list-item-title v-text="item" />
-                            </v-list-item-content>
-  
-                            <v-scale-transition>
-                              <v-list-item-icon
-                                v-if="attrs.inputValue"
-                                class="my-3"
-                              >
-                                <v-icon>mdi-check</v-icon>
-                              </v-list-item-icon>
-                            </v-scale-transition>
-                          </v-list-item>
-                        </template>
-                      </v-select>
+                      ></v-select>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      class="text-right"
-                    >
+                    <v-col cols="12" class="text-right">
                       <v-btn
                         v-if="option!==2"
                         color="success"
@@ -146,12 +106,12 @@
         option: 0,
         title: '',
         articuloData: {
-         nombre:'', 
-         cantidad: '',
-         status: '',
-          functions: [],
+          rif: '',
+          nombre: '', 
+          direccion: '',
+          status: '',
         },
-        functions: ['demo', 'demo2'],
+        items: ['Activo', 'Inactivo'],
       }),
       computed: {
         getTitle () {
