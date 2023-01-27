@@ -81,6 +81,42 @@
             </v-btn>
           </template>
         </v-data-table>
+        <div class="text-center">
+    <v-snackbar   
+      v-model="snackbar"
+      color="#75B768"
+    >
+    {{ message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+      <v-dialog v-model="dialogDelete" persistent max-width="500px">
+        <v-card>
+          <v-card-title class="text-h5"
+            >Estas seguro que deseas eliminar esta medicina?</v-card-title
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeDelete"
+              >Cancelar</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              >OK</v-btn
+            >
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
         <v-card-text style="height: 100px; position: relative">
           <v-fab-transition>
             <v-btn
@@ -102,7 +138,7 @@
   </template>
   
   <script>
- 
+ import {  medicinaGetList,medicinaGet, deletemedicina, } from "../../../api/modules/Medicina";
   
     export default {
       name: 'DashboardDataTables',
@@ -112,55 +148,44 @@
         headers: [
           {
             text: 'codigo',
-            value: 'articulo.codigo',
+            value: 'codigo',
           },
           {
             text:'nombre',
-            value: 'articulo.nombre',
+            value: 'nombre',
           },
           {
             text:'cantidad',
-            value: 'articulo.cantidad',
+            value: 'cantidad',
           },
   
-          {
-            text:'status',
-            value: 'articulo.status',
-          },
+          
           {
             sortable: false,
             text: 'Actions',
             value: 'actions',
           },
         ],
-        items: [
-          {
-            articulo: {
-              codigo: 1,
-              nombre: 'admin',
-              cantidad:'10',
-              status: 'Activo',
-            },
-          },
-        ],
+        items: [],
         search: undefined,
+        id:0,
+        snackbar:false,
+        dialogDelete:false,
+        message:''
       }),
       async mounted () {
         // window.getApp.$emit("SHOW_ERROR", "34534535")
+        this.data()
       },
       methods: {
-        async loadData () {
-          console.log('mounted')
-          let serviceResponse = await getRoles()
-          if (serviceResponse.ok === 1) {
-            console.log(serviceResponse)
-            this.items = serviceResponse.data
-          } else {
-            console.log(serviceResponse)
-            const params = { text: serviceResponse.message.text }
-            window.getApp.$emit('SHOW_ERROR', params)
-          }
-        },
+
+        data: async function() {
+      let result;
+      result = await medicinaGetList();
+      this.items = result;
+   console.log('EL STOREE: ', result)
+       console.log('array',this.items)
+    },
         create () {
           console.log('create')
           this.$router.push({
@@ -190,11 +215,35 @@
             },
           })
         },
-        deletearticulo (item) {
-          console.log(item)
-          console.log('Delete')
+          deletearticulo (item) {
+          this.id = item.id
+          this.dialogDelete = true;
+          },
+
+        closeDelete() {
+        this.dialogDelete = false;
         },
-      },
+
+        async   deleteItemConfirm() {
+            let result;
+            result = await deletemedicina(this.id);
+            console.log("respuesta", result)
+         if(result === "Eliminado Exitosamente")
+            {
+              this.snackbar = true;
+                this.message = "Eliminación exitosa";
+              this.data();
+              this.dialogDelete = false;
+              setTimeout(() => {this.$router.push({ name: "Medicina"});}, 1000);
+            }
+            else{
+            
+            this.snackbar = true;
+              this.message = "ocurrio un error al eliminar la medicina";
+                setTimeout(() => { this.snackbar = false;}, 1000);
+            }
+          }
+    }
     }
   </script>
   
