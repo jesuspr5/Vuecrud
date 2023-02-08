@@ -145,24 +145,24 @@
           result = await loginUser(userToLogin)
           console.log('token' + result)
           console.log(result.message)
-          var mess = result.message
+          var mess = result.content
           var token = result.data
           switch (mess) {
-            case 'Input string was not in a correct format.':
+            case 'Usuario no existe. Verifique!':
               this.dialog = true
               this.message = 'El usuario no esta registrado'
               break
-            case 'Contraseña inválida':
+            case 'Clave incorrecta, verifique.':
               this.dialog = true
               this.message = 'La contraseña es invalida'
               break
-            case '':
-              localStorage.setItem('token', token)
-              this.$router.push('/home/users/users')
-              break
+            // case '':
+            //   localStorage.setItem('token', token)
+            //   this.$router.push('/home/users/users')
+            //   break
             default:
-              this.dialog = true
-              this.message = 'Hubo un error.!'
+            localStorage.setItem('token', token)
+              this.$router.push('/home/users/users')
 
               break
           }
