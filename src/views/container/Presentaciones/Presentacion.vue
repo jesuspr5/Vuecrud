@@ -11,7 +11,7 @@
       >
         <template v-slot:after-heading>
           <div class="display-2 font-weight-light">
-          Medicina
+       Presentacion 
           </div>
         </template>
   
@@ -72,7 +72,7 @@
               fab
               class="px-1 ml-1"
               x-small
-              @click=" deletearticulo(item)"
+              @click=" deletesucursal(item)"
             >
               <v-icon
                 small
@@ -138,7 +138,7 @@
   </template>
   
   <script>
- import {  medicinaGetList,medicinaGet, deletemedicina, } from "../../../api/modules/Medicina";
+  import {    presentacionGetList, deletepresentacion, } from "../../../api/modules/presentacion";
   
     export default {
       name: 'DashboardDataTables',
@@ -147,25 +147,17 @@
         hidden: false,
         headers: [
           {
-            text: 'codigo',
-            value: 'codigo',
-          },
-          {
-            text:'nombre',
+            text:'Nombre',
             value: 'nombre',
+            align: 'center'
           },
           {
-            text:'Presentacion',
-            value: 'tipo',
+            text:'Estatus',
+            value: 'estatus',
+            align : 'center'
           },
-          {
-            text:'Stock',
-            value: 'stock',
-          },
-          {
-            text:'Sucursal',
-            value: 'sucursal',
-          },
+  
+  
           {
             sortable: false,
             text: 'Actions',
@@ -173,28 +165,27 @@
           },
         ],
         items: [],
-        search: undefined,
         id:0,
         snackbar:false,
         dialogDelete:false,
-        message:''
+        message:'',
+        
+        search: undefined,
       }),
       async mounted () {
         // window.getApp.$emit("SHOW_ERROR", "34534535")
         this.data()
       },
       methods: {
-
         data: async function() {
       let result;
-      result = await medicinaGetList();
+      result = await presentacionGetList();
       this.items = result;
-
     },
         create () {
           console.log('create')
           this.$router.push({
-            name: 'MedicinaForm',
+            name: 'PresentacionForm',
             params: {
               option: 1, // option 1 to create
             },
@@ -203,35 +194,36 @@
         show (item) {
           console.log(item)
           this.$router.push({
-            name: 'MedicinaForm',
+            name: 'PresentacionForm',
             params: {
               option: 2, // option 2 to show
-              articuloData: item,
+              presentacionData: item,
             },
           })
         },
         edit (item) {
           console.log(item)
           this.$router.push({
-            name: 'MedicinaForm',
+            name: 'PresentacionForm',
             params: {
               option: 3, // option 3 to edit
-              articuloData: item,
+              presentacionData: item,
             },
           })
         },
-          deletearticulo (item) {
+        deletesucursal (item) {
           this.id = item.id
           this.dialogDelete = true;
-          },
+        },
 
         closeDelete() {
         this.dialogDelete = false;
         },
 
+        
         async   deleteItemConfirm() {
             let result;
-            result = await deletemedicina(this.id);
+            result = await deletepresentacion(this.id);
             console.log("respuesta", result)
          if(result === "Eliminado Exitosamente")
             {
@@ -239,16 +231,16 @@
                 this.message = "Eliminación exitosa";
               this.data();
               this.dialogDelete = false;
-              // setTimeout(() => {this.$router.push({ name: "Medicina"});}, 1000);
+              // setTimeout(() => {this.$router.push({ name: "Presentacion"});}, 1000);
             }
             else{
             
             this.snackbar = true;
-              this.message = "ocurrio un error al eliminar la medicina";
+              this.message = "ocurrio un error al eliminar la presentacion";
                 setTimeout(() => { this.snackbar = false;}, 1000);
             }
           }
-    }
+      },
     }
   </script>
   

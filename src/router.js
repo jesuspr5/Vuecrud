@@ -84,6 +84,17 @@ export default new Router({
           path: 'sucursal/form',
           component: () => import('@/views/container/Sucursales/SucursalForm'),
         },
+        {
+          name: 'Presentacion',
+          path: 'presentacion/presentacion',
+          component: () => import('@/views/container/Presentaciones/Presentacion'),
+        },
+
+        {
+          name: 'PresentacionForm',
+          path: 'presentacion/form',
+          component: () => import('@/views/container/Presentaciones/PresentacionForm'),
+        },
 
 
         // Kitchen

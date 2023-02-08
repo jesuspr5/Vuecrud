@@ -72,7 +72,7 @@
               fab
               class="px-1 ml-1"
               x-small
-              @click=" deletearticulo(item)"
+              @click=" deletesucursal(item)"
             >
               <v-icon
                 small
@@ -81,6 +81,42 @@
             </v-btn>
           </template>
         </v-data-table>
+        <div class="text-center">
+    <v-snackbar   
+      v-model="snackbar"
+      color="#75B768"
+    >
+    {{ message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+      <v-dialog v-model="dialogDelete" persistent max-width="500px">
+        <v-card>
+          <v-card-title class="text-h5"
+            >Estas seguro que deseas eliminar esta medicina?</v-card-title
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeDelete"
+              >Cancelar</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              >OK</v-btn
+            >
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
         <v-card-text style="height: 100px; position: relative">
           <v-fab-transition>
             <v-btn
@@ -102,7 +138,7 @@
   </template>
   
   <script>
- 
+  import {   sucursalGetList ,deletesucursal } from "../../../api/modules/sucursal";
   
     export default {
       name: 'DashboardDataTables',
@@ -125,50 +161,36 @@
             value: 'direccion',
             align : 'center'
           },
-  
           {
-            text:'status',
-            value: 'status',
+            text:'Estatus',
+            value: 'estatus',
             align : 'center'
           },
+  
+  
           {
             sortable: false,
             text: 'Actions',
             value: 'actions',
           },
         ],
-        items: [
-          {
-            rif: 1,
-            nombre: 'admin',
-            direccion:'10',
-            status: 'Activo',
-          },
-          {
-            rif: 2,
-            nombre: 'admin 2',
-            direccion:'12',
-            status: 'Activo',
-          },
-        ],
+        items: [],
+        id:0,
+        snackbar:false,
+        dialogDelete:false,
+        message:'',
         search: undefined,
       }),
       async mounted () {
         // window.getApp.$emit("SHOW_ERROR", "34534535")
+        this.data()
       },
       methods: {
-        async loadData () {
-          console.log('mounted')
-          let serviceResponse = await getRoles()
-          if (serviceResponse.ok === 1) {
-            console.log(serviceResponse)
-            this.items = serviceResponse.data
-          } else {
-            console.log(serviceResponse)
-            const params = { text: serviceResponse.message.text }
-            window.getApp.$emit('SHOW_ERROR', params)
-          }
-        },
+        data: async function() {
+      let result;
+      result = await sucursalGetList();
+      this.items = result;
+    },
         create () {
           console.log('create')
           this.$router.push({
@@ -184,7 +206,7 @@
             name: 'SucursalForm',
             params: {
               option: 2, // option 2 to show
-              articuloData: item,
+             sucursalData: item,
             },
           })
         },
@@ -194,14 +216,39 @@
             name: 'SucursalForm',
             params: {
               option: 3, // option 3 to edit
-              articuloData: item,
+              sucursalData: item,
             },
           })
         },
-        deletearticulo (item) {
-          console.log(item)
-          console.log('Delete')
+        deletesucursal (item) {
+          this.id = item.idsucursal
+          this.dialogDelete = true;
         },
+
+        closeDelete() {
+        this.dialogDelete = false;
+        },
+
+        
+        async   deleteItemConfirm() {
+            let result;
+            result = await deletesucursal(this.id);
+            console.log("respuesta", result)
+         if(result === "Eliminado Exitosamente")
+            {
+              this.snackbar = true;
+                this.message = "Eliminación exitosa";
+              this.data();
+              this.dialogDelete = false;
+              // setTimeout(() => {this.$router.push({ name: "Sucursal"});}, 1000);
+            }
+            else{
+            
+            this.snackbar = true;
+              this.message = "ocurrio un error al eliminar la sucursal";
+                setTimeout(() => { this.snackbar = false;}, 1000);
+            }
+          }
       },
     }
   </script>

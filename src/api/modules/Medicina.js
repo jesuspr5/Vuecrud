@@ -40,7 +40,7 @@ async function updatemedicina(medicinaUpdate) {
     "https://localhost:44309/Medicina/Update",
     medicinaUpdate
   );
-  console.log("Blog Actualizado: ", result);
+  console.log("medicina Actualizado: ", result);
   return result;
 }
 

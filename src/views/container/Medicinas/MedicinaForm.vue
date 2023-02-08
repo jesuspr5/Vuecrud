@@ -72,16 +72,68 @@
                     <v-col
                       cols="12"
                       sm="4"
+
+                    >
+                  
+                      <v-select
+                        v-model="articuloData.tipo"
+                        color="secondary"
+                        item-color="secondary"
+                        label="Presentacion"
+                        :items="presentacion"
+                        item-text="nombre"
+                        item-value="id"
+                        :disabled="option===2?true:false"
+                      >
+                      
+                      </v-select>
+                    </v-col> 
+                    <v-col
+                      cols="12"
+                      sm="4"
                     >
                       <v-text-field
-                        v-model="articuloData.cantidad"
-                        label="Cantidad"
+                        v-model="articuloData.stock"
+                        label="Stock"
                         :rules="[rules.required]"
                         class="purple-input"
                         :disabled="option===2?true:false"
                       />
                     </v-col>
+                     <v-col
+                      cols="12"
+                      sm="4"
+                      :hidden="option===1?true:false || option===3?true:false"
+                    >
+                      <v-text-field
+                        v-model="articuloData.idsucursal"
+                        label="Sucursal"
+                      
+                        class="purple-input"
+                        :disabled="option===2?true:false"
+                      />
+                    </v-col>
                     <v-col
+                      cols="12"
+                      sm="4"
+                      :hidden="option===2?true:false "
+
+                    >
+                  
+                      <v-select
+                        v-model="articuloData.idsucursal"
+                        color="secondary"
+                        item-color="secondary"
+                        label="sucursal"
+                        :items="sucursales"
+                        item-text="nombre"
+                        item-value="idsucursal"
+                        :disabled="option===2?true:false"
+                      >
+                      
+                      </v-select>
+                    </v-col> 
+                    <!-- <v-col
                       cols="12"
                       sm="4"
                       :hidden="option===2?true:false || option===1?true:false"
@@ -93,44 +145,24 @@
                         :disabled="option===2?true:false"
                         
                       />
-                    </v-col>
-                    <!-- <v-col
+                    </v-col> -->
+                    <v-col
                       cols="12"
                       sm="4"
+                      :hidden="option===1?true:false"
                     >
                       <v-select
-                        v-model="articuloData.functions"
+                        v-model="articuloData.estatus"
                         color="secondary"
                         item-color="secondary"
-                        label="funciones"
-                        multiple
-                        :items="functions"
+                        label="estatus"
+                        :items="status"
                         :disabled="option===2?true:false"
                       >
-                        <template v-slot:item="{ attrs, item, on }">
-                          <v-list-item
-                            v-bind="attrs"
-                            active-class="secondary elevation-4 white--text"
-                            class="mx-3 mb-2 v-sheet"
-                            elevation="0"
-                            v-on="on"
-                          >
-                            <v-list-item-content>
-                              <v-list-item-title v-text="item" />
-                            </v-list-item-content>
-  
-                            <v-scale-transition>
-                              <v-list-item-icon
-                                v-if="attrs.inputValue"
-                                class="my-3"
-                              >
-                                <v-icon>mdi-check</v-icon>
-                              </v-list-item-icon>
-                            </v-scale-transition>
-                          </v-list-item>
-                        </template>
+                    
                       </v-select>
-                    </v-col> -->
+                    </v-col> 
+                  
                     <v-col
                       cols="12"
                       class="text-right"
@@ -177,6 +209,9 @@
   <script>
 
 import { updatemedicina, createmedicina, medicinaGet } from "../../../api/modules/Medicina";
+import {  sucursalGetList,sucursalGet } from "../../../api/modules/sucursal";
+import {presentacionGetList, presentacionGet  } from "../../../api/modules/presentacion";
+
     export default {
       data: () => ({
         tabs: 0,
@@ -184,14 +219,30 @@ import { updatemedicina, createmedicina, medicinaGet } from "../../../api/module
         title: '',
         snackbar:false,
         valid:true,
-        message:"",
-        id:'',
+        message:' ',
         articuloData: {
          codigo:'',
          nombre:'', 
-         cantidad:'',
-         estatus: true,
+         tipo:'',
+         stock:'',
+         idsucursal:'',
+         estatus: '',
         },
+        sucursales:[],
+        presentacion:[],
+        status:[
+        { 
+            text:'activo',
+            value:'Activo'
+
+           },
+           {
+            text:'inactivo',
+            value:'Inactivo'
+
+           }
+          ],
+        
         rules: {
         sise: value=> !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
       required: value => !!value || "Debe ingresar Texto.",
@@ -214,16 +265,31 @@ import { updatemedicina, createmedicina, medicinaGet } from "../../../api/module
       },
       mounted () {
         // console.log($t('roles.title'))
-        this.initialize()
+        this.initialize();
+        this.sucursal();
+        this.presentacion();
       },
       methods: {
        async    initialize () {
           this.option = this.$route.params.option
           if (this.option === 3 || this.option === 2) {
             this.articuloData = this.$route.params.articuloData
+            
        
           }
         },
+        sucursal: async function() {
+      let result;
+      result = await sucursalGetList();
+      this.sucursales = result;
+
+    },
+    presentacion: async function() {
+      let result;
+      result = await presentacionGetList();
+      this.presentacion = result;
+
+    },
         async submit () {
           if (this.option === 1) {
             if (this.$refs.form.validate()) {
@@ -231,11 +297,13 @@ import { updatemedicina, createmedicina, medicinaGet } from "../../../api/module
                 let medicina ={
                   codigo:this.articuloData.codigo,
                   nombre:this.articuloData.nombre, 
-                  cantidad: parseInt(this.articuloData.cantidad),
-                  estatus: this.articuloData.estatus,
+                  tipo : this.articuloData.tipo,
+                  stock: parseInt(this.articuloData.stock),
+                  idsucursal: this.articuloData.idsucursal,
+                  estatus: "Activo"
                 
                 }
-                console.log("antes", medicina)
+                console.log("medicina", medicina)
                 medicina = await  createmedicina(medicina)
                 if (medicina != null) {
           
@@ -265,11 +333,12 @@ import { updatemedicina, createmedicina, medicinaGet } from "../../../api/module
                   idM : this.articuloData.id,
                   codigo:this.articuloData.codigo,
                   nombre:this.articuloData.nombre, 
-                  cantidad: parseInt(this.articuloData.cantidad),
+                  tipo : this.articuloData.tipo,
+                  stock: parseInt(this.articuloData.stock),
                   estatus: this.articuloData.estatus,
                 
                 }
-                console.log("antes", medicina)
+                
                 medicina = await  updatemedicina(medicina)
                 if (medicina != null) {
           

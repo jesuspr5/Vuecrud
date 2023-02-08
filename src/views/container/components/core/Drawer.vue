@@ -21,8 +21,8 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">{{ $t("LC") }}</span>
-          <span class="logo-normal">{{ $t("LOCATEL") }}</span>
+          <span class="logo-mini"> "LC" </span>
+          <span class="logo-normal"> "LOCATEL"</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -84,40 +84,9 @@
     },
 
     data: () => ({
+      rol:'Administrador',
       items: [
-        // {
-        //   icon: 'mdi-view-dashboard',
-        //   title: 'dashboard',
-        //   to: '/dashboard',
-        // },
-        // {
-        //   group: '/pages',
-        //   icon: 'mdi-image',
-        //   title: 'pages',
-        //   children: [
-
-        //     {
-        //       title: 'login',
-        //       to: 'login',
-        //     },
-        //     {
-        //       title: 'register',
-        //       to: 'pricing',
-        //     },
-        //     {
-        //       title: 'lock',
-        //       to: 'lock',
-        //     },
-        //     {
-        //       title: 'user',
-        //       to: 'user',
-        //     },
-        //     {
-        //       title: 'error',
-        //       to: '404',
-        //     },
-        //   ],
-        // },
+      
 
         {
           group: '/home/users',
@@ -163,30 +132,32 @@
             },
           ],
         },
-        // {
-        //   group: '/kitchens',
-        //   icon: 'mdi-coffee-maker',
-        //   title: 'kitchens.kitchens',
-        //   children: [
-        //     {
-        //       title: 'kitchens.kitchens',
-        //       to: 'kitchens',
-        //     },
-        //   ],
-        // },
-        // {
-        //   group: '/vendors',
-        //   icon: 'mdi-account-tie',
-        //   title: 'vendors.vendors',
-        //   children: [
-        //     {
-        //       title: 'vendors.vendors',
-        //       to: 'vendors',
-        //     },
-        //   ],
-        // },
-
+          {
+          group: '/home/presentacion',
+          icon: 'mdi-account-key',
+          title: 'Presentacion',
+          children: [
+            {
+              title: 'Presentacion',
+              to: 'presentacion',
+            },
+          ],
+        },
+       
       ],
+    items2:  [
+      {
+          group: '/home/medicinas',
+          icon: 'mdi-account-key',
+          title: 'Medicina',
+          children: [
+            {
+              title: 'Medicinas',
+              to: 'medicinas',
+            },
+          ],
+        },
+      ]
     }),
 
     computed: {
@@ -200,7 +171,10 @@
         },
       },
       computedItems () {
+        if(this.rol==='Administrador')
         return this.items.map(this.mapItem)
+        else
+        return this.items2.map(this.mapItem)
       },
       profile () {
         return {

@@ -45,36 +45,20 @@
               <v-form ref="form" v-model="valid" lazy-validation>
                 <v-container class="py-0">
                   <v-row>
+                   
                     <v-col cols="12" sm="3" >
                       <v-text-field
-                        v-model="sucursalData.rif"
-                        class="purple-input"
-                        label="Rif"
-                        :rules="[rules.required]"
-                        :disabled="option===2?true:false"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="3" >
-                      <v-text-field
-                        v-model="sucursalData.nombre"
+                        v-model="presentacionData.nombre"
                         class="purple-input"
                         label="Nombre"
                         :rules="[rules.required]"
                         :disabled="option===2?true:false"
                       />
                     </v-col>
-                    <v-col cols="12" sm="3" >
-                      <v-text-field
-                        v-model="sucursalData.direccion"
-                        label="Direccion"
-                        class="purple-input"
-                        :rules="[rules.required]"
-                        :disabled="option===2?true:false"
-                      />
-                    </v-col>
+                 
                     <v-col cols="12" sm="3"   :hidden="option===1?true:false">
                       <v-select
-                        v-model="sucursalData.estatus"
+                        v-model="presentacionData.estatus"
                         :items="items"
                         label="Estatus"
                         class="purple-input"
@@ -121,7 +105,7 @@
   </template>
   
   <script>
-    import {  createsucursal,updatesucursal } from "../../../api/modules/sucursal";
+    import {  createpresentacion,updatepresentacion } from "../../../api/modules/presentacion";
 
   
     export default {
@@ -136,11 +120,9 @@
       required: value => !!value || "Debe ingresar Texto.",
       min: v => v.length >= 5 || "Mínimo 5 caracteres",
     },
-        sucursalData: {
-          idsucursal:'',
-          rif: '',
+        presentacionData: {
+          id:'',
           nombre: '', 
-          direccion: '',
           estatus:'',
         },
         items: [
@@ -178,7 +160,7 @@
         initialize () {
           this.option = this.$route.params.option
           if (this.option === 3 || this.option === 2) {
-            this.sucursalData = this.$route.params.sucursalData
+            this.presentacionData = this.$route.params.presentacionData
            
           }
         },
@@ -186,21 +168,20 @@
           if (this.option === 1) {
             if (this.$refs.form.validate()) {
             
-                let sucursal ={
-                  rif: this.sucursalData.rif,
-                  nombre: this.sucursalData.nombre, 
-                  direccion: this.sucursalData.direccion,
+                let presentacion ={
+              
+                  nombre: this.presentacionData.nombre,
                   estatus:"Activo",
                
                 
                 }
-                console.log("antes", sucursal)
-                sucursal = await  createsucursal(sucursal)
-                if (sucursal != null) {
+                console.log("antes", presentacion)
+                presentacion = await  createpresentacion(presentacion)
+                if (presentacion != null) {
           
                  this.snackbar = true;
                 this.message = "Registro exitoso";
-                 setTimeout(()=>{this.$router.push({ name: "Sucursal" })},2000);
+                 setTimeout(()=>{this.$router.push({ name: "Presentacion" })},2000);
                    }else {
                       this.snackbar = true;
                       this.message = "Hubo un error durante el registro";
@@ -220,20 +201,18 @@
           } else if (this.option === 3) {
             if (this.$refs.form.validate()) {
 
-              let sucursal ={
-                  idsucursal : this.sucursalData.idsucursal,
-                  rif: this.sucursalData.rif,
-                  nombre: this.sucursalData.nombre, 
-                  direccion: this.sucursalData.direccion,
-                  estatus:this.sucursalData.estatus,
+              let presentacion ={
+                  idp : this.presentacionData.id,
+                  nombre: this.presentacionData.nombre, 
+                  estatus:this.presentacionData.estatus,
                 }
-                console.log("antes", sucursal)
-                sucursal = await  updatesucursal(sucursal)
-                if (sucursal != null) {
+                console.log("antes", presentacion)
+                presentacion = await  updatepresentacion(presentacion)
+                if (presentacion != null) {
           
                  this.snackbar = true;
                 this.message = "Actualizacion exitosa";
-                 setTimeout(()=>{this.$router.push({ name: "Sucursal" })},2000);
+                 setTimeout(()=>{this.$router.push({ name: "Presentacion" })},2000);
                    }else {
                       this.snackbar = true;
                       this.message = "Hubo un error durante la Actualizacion";
