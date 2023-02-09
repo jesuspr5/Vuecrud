@@ -69,14 +69,27 @@
                         :disabled="option===2?true:false"
                       />
                     </v-col>
+
+                    <!-- <v-col
+                      cols="12"
+                      sm="4"
+                      :hidden="option===1?true:false || option===3?true:false"
+                    >
+                      <v-text-field
+                        v-model="articuloData.tipo"
+                        label="Presentacion"
+                        class="purple-input"
+                        :disabled="option===2?true:false"
+                      />
+                    </v-col> -->
                     <v-col
                       cols="12"
                       sm="4"
-
+                    
                     >
                   
                       <v-select
-                        v-model="articuloData.tipo"
+                        v-model="articuloData.idp"
                         color="secondary"
                         item-color="secondary"
                         label="Presentacion"
@@ -100,23 +113,22 @@
                         :disabled="option===2?true:false"
                       />
                     </v-col>
-                     <v-col
+                     <!-- <v-col
                       cols="12"
                       sm="4"
                       :hidden="option===1?true:false || option===3?true:false"
                     >
                       <v-text-field
-                        v-model="articuloData.idsucursal"
+                        v-model="articuloData.sucursal"
                         label="Sucursal"
-                      
                         class="purple-input"
                         :disabled="option===2?true:false"
                       />
-                    </v-col>
+                    </v-col> -->
                     <v-col
                       cols="12"
                       sm="4"
-                      :hidden="option===2?true:false "
+                      
 
                     >
                   
@@ -223,9 +235,9 @@ import {presentacionGetList, presentacionGet  } from "../../../api/modules/prese
         articuloData: {
          codigo:'',
          nombre:'', 
-         tipo:'',
          stock:'',
          idsucursal:'',
+         idp:'',
          estatus: '',
         },
         sucursales:[],
@@ -267,13 +279,14 @@ import {presentacionGetList, presentacionGet  } from "../../../api/modules/prese
         // console.log($t('roles.title'))
         this.initialize();
         this.sucursal();
-        this.presentacion();
+        this.data();
       },
       methods: {
        async    initialize () {
           this.option = this.$route.params.option
           if (this.option === 3 || this.option === 2) {
             this.articuloData = this.$route.params.articuloData
+          console.log("json",this.articuloData)
             
        
           }
@@ -284,10 +297,11 @@ import {presentacionGetList, presentacionGet  } from "../../../api/modules/prese
       this.sucursales = result;
 
     },
-    presentacion: async function() {
+    data: async function() {
       let result;
       result = await presentacionGetList();
       this.presentacion = result;
+      console.log("pr",this.presentacion)
 
     },
         async submit () {
@@ -297,9 +311,9 @@ import {presentacionGetList, presentacionGet  } from "../../../api/modules/prese
                 let medicina ={
                   codigo:this.articuloData.codigo,
                   nombre:this.articuloData.nombre, 
-                  tipo : this.articuloData.tipo,
                   stock: parseInt(this.articuloData.stock),
                   idsucursal: this.articuloData.idsucursal,
+                  idp : this.articuloData.idp,
                   estatus: "Activo"
                 
                 }
@@ -333,8 +347,9 @@ import {presentacionGetList, presentacionGet  } from "../../../api/modules/prese
                   idM : this.articuloData.id,
                   codigo:this.articuloData.codigo,
                   nombre:this.articuloData.nombre, 
-                  tipo : this.articuloData.tipo,
                   stock: parseInt(this.articuloData.stock),
+                  idsucursal : this.articuloData.idsucursal,
+                  idp : this.articuloData.idp,
                   estatus: this.articuloData.estatus,
                 
                 }

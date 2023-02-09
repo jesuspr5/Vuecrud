@@ -102,6 +102,7 @@
 </template>
 
 <script>
+ import {   userGetList } from "../../../api/modules/user";
   export default {
     name: 'DashboardDataTables',
 
@@ -109,26 +110,27 @@
       hidden: false,
       title: 'Usuario',
       headers: [
-        {
-          text: 'id',
-          value: 'person.id',
-        },
+       
         {
           text: 'nombre',
-          value: 'person.nombre',
+          value: 'nombre',
         },
         {
           text: 'correo',
-          value: 'person.email',
+          value: 'email',
         },
        
         {
           text: 'Rol',
-          value: 'person.rol',
+          value: 'rol',
         },
         {
-          text: 'estatus',
-          value: 'person.estatus',
+          text: 'Sucursal',
+          value: 'sucursal',
+        },
+        {
+          text: 'Estatus',
+          value: 'estatus',
         },
         {
           sortable: false,
@@ -136,44 +138,21 @@
           value: 'actions',
         },
       ],
-      items: [
-        {
-          person: {
-            id: 1,
-            nombre: 'jesus',
-            rol: 'administrador',
-            estatus: 'activo',
-          },
-        },
-        {
-          person: {
-            id: 2,
-            nombre: 'junior',
-            email:'junior@gmail.com',
-            rol: 'agente',
-            estatus: 'activo',
-          },
-        },
-      ],
+      items: [],
       search: undefined,
       searchLabel: 'undefined',
     }),
     async mounted () {
       // window.getApp.$emit("SHOW_ERROR", "34534535")
+      this.data()
     },
     methods: {
-      async loadUsersData () {
-        console.log('mounted')
-        let serviceResponse = await getUsers()
-        if (serviceResponse.ok === 1) {
-          console.log(serviceResponse)
-          this.items = serviceResponse.data
-        } else {
-          console.log(serviceResponse)
-          const params = { text: serviceResponse.message.text }
-          window.getApp.$emit('SHOW_ERROR', params)
-        }
-      },
+      data: async function() {
+      let result;
+      result = await userGetList();
+      this.items = result;
+      console.log("Datos", this.items)
+    },
       createUser () {
         console.log('create')
         this.$router.push({

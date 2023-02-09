@@ -36,7 +36,7 @@
         multi-sort
         class="elevation-1"
       >
-        <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
           <v-btn
 
             :key="1"
@@ -81,6 +81,42 @@
           </v-btn>
         </template>
       </v-data-table>
+      <div class="text-center">
+    <v-snackbar   
+      v-model="snackbar"
+      color="#75B768"
+    >
+    {{ message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+      <v-dialog v-model="dialogDelete" persistent max-width="500px">
+        <v-card>
+          <v-card-title class="text-h5"
+            >Estas seguro que deseas eliminar esta medicina?</v-card-title
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeDelete"
+              >Cancelar</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              >OK</v-btn
+            >
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-card-text style="height: 100px; position: relative">
         <v-fab-transition>
           <v-btn
@@ -102,8 +138,8 @@
 </template>
 
 <script>
-  import { getRoles } from '@/api/modules'
-  import i18n from '@/i18n'
+
+  import {   RolGetList,deleteRol } from "../../../api/modules/role";
 
   export default {
     name: 'DashboardDataTables',
@@ -111,18 +147,17 @@
     data: () => ({
       hidden: false,
       headers: [
+       
         {
-          text: i18n.t('id'),
-          value: 'role.id',
-        },
-        {
-          text: i18n.t('roles.name'),
-          value: 'role.name',
+          text:'Nombre',
+          value: 'nombre',
+          align : 'center'
         },
 
         {
-          text: i18n.t('roles.status'),
-          value: 'role.status',
+          text:'Estatus',
+          value: 'estatus',
+           align : 'center'
         },
         {
           sortable: false,
@@ -130,33 +165,24 @@
           value: 'actions',
         },
       ],
-      items: [
-        {
-          role: {
-            id: 1,
-            name: 'admin',
-            status: 'Activo',
-          },
-        },
-      ],
+      items: [],
+      id:0,
+      snackbar:false,
+      dialogDelete:false,
+      message:'',
       search: undefined,
     }),
     async mounted () {
       // window.getApp.$emit("SHOW_ERROR", "34534535")
+      this.data()
     },
     methods: {
-      async loadRolesData () {
-        console.log('mounted')
-        let serviceResponse = await getRoles()
-        if (serviceResponse.ok === 1) {
-          console.log(serviceResponse)
-          this.items = serviceResponse.data
-        } else {
-          console.log(serviceResponse)
-          const params = { text: serviceResponse.message.text }
-          window.getApp.$emit('SHOW_ERROR', params)
-        }
-      },
+      data: async function() {
+      let result;
+      result = await RolGetList();
+      this.items = result;
+      console.log("Datos", this.items)
+    },
       createRole () {
         console.log('create')
         this.$router.push({
@@ -187,9 +213,34 @@
         })
       },
       deleteRole (item) {
-        console.log(item)
-        console.log('Delete')
-      },
+          this.id = item.idrol
+          this.dialogDelete = true;
+        },
+
+        closeDelete() {
+        this.dialogDelete = false;
+        },
+
+        
+        async   deleteItemConfirm() {
+            let result;
+            result = await deleteRol(this.id);
+            console.log("respuesta", result)
+         if(result === "Eliminado Exitosamente")
+            {
+              this.snackbar = true;
+                this.message = "Eliminado Exitosamente";
+              this.data();
+              this.dialogDelete = false;
+           
+            }
+            else{
+            
+            this.snackbar = true;
+              this.message = "ocurrio un error al eliminar el rol";
+                setTimeout(() => { this.snackbar = false;}, 1000);
+            }
+          }
     },
   }
 </script>
