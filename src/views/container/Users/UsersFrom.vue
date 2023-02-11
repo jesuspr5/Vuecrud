@@ -24,31 +24,10 @@
         </v-card-text>
         <v-tabs-items v-model="tabs" class="transparent">
           <v-tab-item :kei="0">
-            <v-form>
+            <v-form ref="form" v-model="valid" lazy-validation>
               <v-container class="py-0">
                 <v-row>
-                  <!-- <v-col
-                    v-for="(item, index) in dataInput"
-                    :key="`input-${index}`"
-                    cols="12"
-                    md="6"
-                  >
-                    <v-text-field
-                      v-if="item.type=='text'|| item.type=='number' || item.type=='email'  || item.type=='phone'"
-                      v-model="data.obj[`${item.name}`]"
-                      class="purple-input"
-                      :label="item.name"
-                      :type="item.type"
-                      :disabled="option===2?true:false"
-                    />
-                    <v-select
-                      v-if="item.type=='select'"
-                      :items="selectData"
-                      filled
-                      :label="item.name"
-                    ></v-select>
-                  </v-col> -->
-
+                 
                    <v-col
                     cols="12"
                     md="6"
@@ -57,6 +36,8 @@
                       v-model="userData.nombre"
                       label="nombre"
                       class="purple-input"
+                      type="text"
+                      :rules="[rules.required]"
                       :disabled="option===2?true:false"
                     />
                   </v-col>
@@ -66,9 +47,9 @@
                   >
                     <v-text-field
                     v-model="userData.email"
-                 
+                      :rules="[rules.required,rules.emailRules]"
                       label="correo"
-                      type="phone"
+                      type="email"
                       class="purple-input"
                       :disabled="option===2?true:false"
                     />
@@ -79,24 +60,18 @@
                     :hidden="option===2?true:false || option===3?true:false "
                   >
                   <v-text-field
-                    v-model="userData.password"
+                    v-model="newpassword"
                     :append-icon="show1 ? 'mdi-eye' : ' mdi-eye-off'"
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
-                    name="input-10-1"
+                   
                     label="Contraseña"
                     :disabled="option===2?true:false"
-                    hint="At least 8 characters"
+                    hint="minimo 8 caracteres"
                     counter
                     @click:append="show1 = !show1"
                   />
-                    <!-- <v-text-field
-                     
-                      label="Rol"
-                      class="purple-input"
-                      type="password"
-                      :disabled="option===2?true:false"
-                    /> -->
+                 
                   </v-col>
                   <v-col
                     cols="12"
@@ -108,165 +83,147 @@
                     :append-icon="show2 ? 'mdi-eye' : ' mdi-eye-off'"
                     :rules="[rules.required, rules.min]"
                     :type="show2 ? 'text' : 'password'"
-                    name="input-10-1"
+                  
                     label="Confirmar contraseña"
                     :disabled="option===2?true:false"
-                 
-                    hint="At least 8 characters"
+                    hint="minimo 8 caracteres"
                     counter
                     @click:append="show2 = !show2"
                   />
-                    <!-- <v-text-field
-                     
-                      label="Rol"
-                      class="purple-input"
-                      type="password"
-                      :disabled="option===2?true:false"
-                    /> -->
+                    
                   </v-col>
                   
-                  <v-col
-                    cols="12"
-                    md="6"
-                    style="padding-top: 24px"
-                  >
-                    <v-select
-                      :disabled="option===2?true:false"
-                      :items="types"
-                      v-model="userData.rol"
-                      label="Rol"
-                      class="purple-input"
-                      dense
-                    />
-                  </v-col>
-                  <!-- <v-col
-                    cols="12"
-                    md="6"
-                  >
-                    <v-text-field
-                      v-model="userData.rol"
-                      label="Rol"
-                      class="purple-input"
-                      :disabled="option===2?true:false"
-                    />
-                  </v-col> -->
+                
+                 
+                  <v-col cols="12" sm="4" >
                   
+                      <v-select
+                        v-model="userData.idrol"
+                        color="secondary"
+                        item-color="secondary"
+                        label="Rol"
+                        :items="roles"
+                        item-text="nombre"
+                        item-value="idrol"
+                        :disabled="option===2?true:false"
+                      >
+                      
+                      </v-select>
+                    </v-col> 
 
-                  <!-- <v-col
-                    cols="12"
-                    md="6"
-                  >
-                    <v-text-field
-                      v-model="duserData.estatus"
-                      label="estatus"
-                      class="purple-input"
-                      :disabled="option===2?true:false"
-                    />
-                  </v-col> -->
-
+                  <v-col cols="12" sm="4" >
                   
-                  <!-- <v-col
-                    cols="12"
-                    md="6"
-                    style="padding-top: 24px"
-                  >
-                    <v-select
-                      :disabled="option===2?true:false"
-                      :items="types"
-                      class="purple-input"
-                      :label="$t('users.type')"
-                      dense
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      :label="$t('users.address')"
-                      class="purple-input"
-                      :disabled="option===2?true:false"
-                    />
-                  </v-col>  -->
+                      <v-select
+                        v-model="userData.idsucursal"
+                        color="secondary"
+                        item-color="secondary"
+                        label="sucursal"
+                        :items="sucursales"
+                        item-text="nombre"
+                        item-value="idsucursal"
+                        :disabled="option===2?true:false"
+                      >
+                      
+                      </v-select>
+                    </v-col> 
+                    <v-col cols="12" sm="3"   :hidden="option===1?true:false">
+                      <v-select
+                        v-model="userData.estatus"
+                        :items="items"
+                        label="Estatus"
+                        class="purple-input"
+                        :disabled="option===2?true:false"
+                      ></v-select>
+                    </v-col>
+
                 </v-row>
                 <v-col cols="12" class="text-right">
                   <v-btn
                     v-if="option!==2"
                     color="success"
                     class="mr-0"
-                    @click="printData(data.obj)"
+                    @click="submit"
                   >{{ getTitleButton }}</v-btn>
                 </v-col>
               </v-container>
             </v-form>
           </v-tab-item>
-          <!-- <v-tab-item :kei="1">
-            <v-form>
-              <v-container class="py-0">
-                <v-row>
-                  <v-col cols="12" sm="12">
-                    <v-select
-                      color="secondary"
-                      item-color="secondary"
-                      :label="$t('users.role')"
-                      multiple
-                      :items="role"
-                    >
-                      <template v-slot:item="{ attrs, item, on }">
-                        <v-list-item
-                          v-bind="attrs"
-                          active-class="secondary elevation-4 white--text"
-                          class="mx-3 mb-2 v-sheet"
-                          elevation="0"
-                          v-on="on"
-                        >
-                          <v-list-item-content>
-                            <v-list-item-title v-text="item" />
-                          </v-list-item-content>
-
-                          <v-scale-transition>
-                            <v-list-item-icon v-if="attrs.inputValue" class="my-3">
-                              <v-icon>mdi-check</v-icon>
-                            </v-list-item-icon>
-                          </v-scale-transition>
-                        </v-list-item>
-                      </template>
-                    </v-select>
-                  </v-col> 
-                </v-row>
-              </v-container>
-            </v-form>
-          </v-tab-item> -->
+       
         </v-tabs-items>
       </base-material-card>
     </v-row>
+    <div class="text-center">
+    <v-snackbar   
+      v-model="snackbar"
+      color="#75B768"
+    >
+    {{ message }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
   </v-container>
 </template>
 
 <script>
-import i18n from "@/i18n";
-import { editUsers, createUsers } from "@/api/modules";
-import userjson from "./user.json";
+ import {   createUser, updateUser } from "../../../api/modules/user";
+ import {   RolGetList } from "../../../api/modules/role";
+import {  sucursalGetList } from "../../../api/modules/sucursal";
+
 export default {
   data: () => ({
-    dataInput: userjson.inputs,
+
     tabs: 0,
     option: 0,
     show1: false,
     show2:false,
+    snackbar:'',
+    message:'',
+    valid:true,
     title: "",
+    newpassword:'',
     confirmpassword:'',
     rules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 5 || 'Min  characters',
-        emailMatch: () => ('The email and password you entered don\'t match'),
+        required: value => !!value || 'Requiredo.',
+        min: v => v.length >= 5 || 'minimo de caracteres',
+        alfa: v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'La contraseña debe contener al menos una letra minúscula, un número, un carácter especial y una letra mayúscula',
+       emailRules: v => /.+@.+\..+/.test(v) || "el correo deber ser valido. Ejemplo@gmail.com"
+       
       },
     userData:{
-             id: '',
+            idUser: '',
             nombre: '',
             email:'',
-            password:'',
-            rol: '',
+            idrol: '',
+            idsucursal:'',
             estatus: '',
+           
 
-    }
+    },
+    sucursales:[],
+   roles:[],
+   json:{},
+   items: [
+          { 
+            text:'activo',
+            value:'Activo'
+
+           },
+           {
+            text:'inactivo',
+            value:'Inactivo'
+
+           }
+      ],
   }),
   computed: {
     getTitle () {
@@ -283,41 +240,110 @@ export default {
         },
   },
   mounted() {
-    // console.log($t('users.title'))
+   
     this.initialize();
-    console.log(this.dataInput);
+    this.sucursal();
+    this.rol();
+    
   },
   methods: {
-    printData(data) {
-      console.log(data);
+
+
+    sucursal: async function() {
+      let result;
+      result = await sucursalGetList();
+      this.sucursales = result;
+
     },
+    rol: async function() {
+      let result;
+      result = await RolGetList();
+      this.roles = result;
+   
+    },
+   
     initialize() {
       this.option = this.$route.params.option;
       if (this.option === 3 || this.option === 2) {
-        this.data = this.$route.params.data;
+        this.userData = this.$route.params.userData;
       }
     },
-    async submit() {
-      if (this.option === 1) {
-        let serviceResponse = await createUsers(this.data);
-        if (serviceResponse.ok === 1) {
-          console.log(serviceResponse);
-        } else {
-          console.log(serviceResponse);
-          const params = { text: serviceResponse.message.text };
-          window.getApp.$emit("SHOW_ERROR", params);
+    async submit () {
+          if (this.option === 1) {
+            if (this.$refs.form.validate()) {
+            
+              if(this.newpassword !=this.confirmpassword){
+                this.snackbar = true;
+                this.message = "las contraseñas no coinciden";
+                setTimeout(() => {this.snackbar = false; }, 3000);
+                } else {
+                    
+                let user ={
+                 
+                 nombre: this.userData.nombre,
+                 email: this.userData.email,
+                 password: this.newpassword,
+                 idrol: this.userData.idrol,
+                 idsucursal: this.userData.idsucursal,
+                estatus:"Activo",
+               
+                
+                }
+                
+               user = await  createUser(user)
+                if (user != null) {
+          
+                 this.snackbar = true;
+                this.message = "Registro exitoso";
+                 setTimeout(()=>{this.$router.push({ name: "Users" })},2000);
+                   }else {
+                      this.snackbar = true;
+                      this.message = "Hubo un error durante el registro";
+                      setTimeout(() => {this.snackbar = false; }, 1000);
+                         }
+
+                         }
+
+            }else{ 
+                this.snackbar = true;
+                this.message = "Debe llenar todos los campos requeridos";
+                setTimeout(() => { this.snackbar = false;}, 1000);
+              }
+
+           
+          } else if (this.option === 3) {
+           
+
+              let user ={
+                 iduser: this.userData.idUser,
+                 nombre: this.userData.nombre,
+                 email: this.userData.email,
+                 idrol: this.userData.idrol,
+                 idsucursal: this.userData.idsucursal,
+                estatus:this.userData.estatus,
+               
+                
+                }
+              console.log("update user", user)
+                user = await  updateUser(user)
+                if (user != null) {
+          
+                 this.snackbar = true;
+                this.message = "Actualizacion exitosa";
+                 setTimeout(()=>{this.$router.push({ name: "Users" })},2000);
+                   }else {
+                      this.snackbar = true;
+                      this.message = "Hubo un error durante la Actualizacion";
+                      setTimeout(() => {this.snackbar = false; }, 1000);
+                         }
+
+
+
+             
+           
+          }
         }
-      } else if (this.option === 3) {
-        let serviceResponse = await editUsers(this.data.id, this.data);
-        if (serviceResponse.ok === 1) {
-          console.log(serviceResponse);
-        } else {
-          console.log(serviceResponse);
-          const params = { text: serviceResponse.message.text };
-          window.getApp.$emit("SHOW_ERROR", params);
-        }
-      }
-    }
+
   } //
 };
 </script>

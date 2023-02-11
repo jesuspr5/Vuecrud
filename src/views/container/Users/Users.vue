@@ -102,13 +102,13 @@
 </template>
 
 <script>
- import {   userGetList } from "../../../api/modules/user";
+ import {   usersGetList } from "../../../api/modules/user";
   export default {
     name: 'DashboardDataTables',
 
     data: () => ({
       hidden: false,
-      title: 'Usuario',
+      title: 'Usuarios',
       headers: [
        
         {
@@ -122,7 +122,7 @@
        
         {
           text: 'Rol',
-          value: 'rol',
+          value: 'nameRol',
         },
         {
           text: 'Sucursal',
@@ -149,7 +149,7 @@
     methods: {
       data: async function() {
       let result;
-      result = await userGetList();
+      result = await usersGetList();
       this.items = result;
       console.log("Datos", this.items)
     },
@@ -173,7 +173,7 @@
         })
       },
       editUser (item) {
-        console.log(item)
+        console.log("editar")
         this.$router.push({
           name: 'UsersFrom',
           params: {

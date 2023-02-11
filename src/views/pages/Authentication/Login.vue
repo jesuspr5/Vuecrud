@@ -119,13 +119,12 @@
       new: {},
       user: {
         email: '',
-        password: '',
+        password: ''
       },
       rules: {
         required: value => !!value || 'Debe ingresar su contraseña.',
         min: v => v.length >= 5 || 'Mínimo 8 caracteres',
-        emailRules: v =>
-          /.+@.+\..+/.test(v) || 'el correo deber ser valido. Ejemplo@gmail.com',
+        emailRules: v =>/.+@.+\..+/.test(v) || 'el correo deber ser valido. Ejemplo@gmail.com',
       //    emailMatch: () => "El correo y la contraseña no coinciden"
       },
     }),
@@ -138,31 +137,31 @@
             rememberMe: true,
           }
           // this.new = userToLogin;
-          console.log('usuario' + userToLogin)
-          console.log(userToLogin)
-
-          let result
+          console.log("usuario", userToLogin)
+           let result
           result = await loginUser(userToLogin)
-          console.log('token' + result)
-          console.log(result.message)
-          var mess = result.message
-          var token = result.data
+          console.log('token',result)
+       
+          var mess = result.content
+          var token = result.token
+          var rol = result.rol
           switch (mess) {
-            case 'Input string was not in a correct format.':
+            case 'Usuario no existe. Verifique!':
               this.dialog = true
               this.message = 'El usuario no esta registrado'
               break
-            case 'Contraseña inválida':
+            case 'Clave incorrecta, verifique.':
               this.dialog = true
               this.message = 'La contraseña es invalida'
               break
-            case '':
-              localStorage.setItem('token', token)
-              this.$router.push('/home/users/users')
-              break
+            // case '':
+            //   localStorage.setItem('token', token)
+            //   this.$router.push('/home/users/users')
+            //   break
             default:
-              this.dialog = true
-              this.message = 'Hubo un error.!'
+            localStorage.setItem('token', token)
+            localStorage.setItem('rol', rol)
+              this.$router.push('/home/users/users')
 
               break
           }
