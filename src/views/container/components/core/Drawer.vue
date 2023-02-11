@@ -84,7 +84,7 @@
     },
 
     data: () => ({
-      rol:'Administrador',
+      rol:'',
       items: [
       
 
@@ -170,8 +170,12 @@
           this.$store.commit('SET_DRAWER', val)
         },
       },
+      rol() {
+             return localStorage.getItem("rol");
+        },
       computedItems () {
-        if(this.rol==='Administrador')
+        console.log("trae",this.rol)
+        if(this.rol===3)
         return this.items.map(this.mapItem)
         else
         return this.items2.map(this.mapItem)
@@ -213,6 +217,7 @@
           title: this.$t(item.title),
         }
       },
+     
     },
   }
 </script>
